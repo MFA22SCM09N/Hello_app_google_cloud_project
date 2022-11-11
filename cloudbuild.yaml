@@ -1,0 +1,13 @@
+steps:
+# Build the container image
+- flaskhelloworldapp: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$GCP-flaskhelloworldapp-368217/$GCP-PROJECTNAME', '.']
+# Push the container image to Container Registry
+- flaskhelloworldapp: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/$GCP-flaskhelloworldapp-368217/$GCP-PROJECTNAME']
+# Deploy container image to Cloud Run
+- flaskhelloworldapp: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: ['run', 'deploy', '$GCP-PROJECTNAME', '--image', 'gcr.io/$GCP-flaskhelloworldapp-368217/$GCP-PROJECTNAME', '--region', 'us-central1', '--platform', 'managed','--port','80']
+images:
+- gcr.io/$GCP-flaskhelloworldapp-368217/$GCP-PROJECTNAME
